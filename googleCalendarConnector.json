@@ -1,0 +1,258 @@
+{
+  "$id": "googleCalendarConnector",
+  "$schema": "https://schema.yext.com/config/km/connector/v1",
+  "displayName": "Google Calendar Connector",
+  "entityType": "yext/event",
+  "source": {
+    "sourceConfig": {
+      "apiPushConfig": {
+        "app": "78347",
+        "dataFormat": "JSON"
+      }
+    },
+    "baseSelector": {
+      "type": "JSON",
+      "header": "Entity Container",
+      "path": "items"
+    },
+    "selectors": [
+      {
+        "type": "JSON",
+        "header": "Event Name",
+        "path": "summary"
+      },
+      {
+        "type": "JSON",
+        "header": "Entity ID",
+        "path": "id"
+      },
+      {
+        "type": "JSON",
+        "header": "Start Time",
+        "path": "start.dateTime"
+      },
+      {
+        "type": "JSON",
+        "header": "End Time",
+        "path": "end.dateTime"
+      },
+      {
+        "type": "JSON",
+        "header": "Location",
+        "path": "location"
+      },
+      {
+        "type": "JSON",
+        "header": "Start Time All Day",
+        "path": "start.date"
+      },
+      {
+        "type": "JSON",
+        "header": "End Time All Day",
+        "path": "end.date"
+      },
+      {
+        "type": "JSON",
+        "header": "Start Time - Date",
+        "path": "start.dateTime"
+      },
+      {
+        "type": "JSON",
+        "header": "Description",
+        "path": "description"
+      },
+      {
+        "type": "JSON",
+        "header": "Event Link",
+        "path": "htmlLink"
+      },
+      {
+        "type": "JSON",
+        "header": "Color",
+        "path": "colorId"
+      },
+      {
+        "type": "JSON",
+        "header": "Creator Name",
+        "path": "creator.displayName"
+      },
+      {
+        "type": "JSON",
+        "header": "Creator Email",
+        "path": "creator.email"
+      },
+      {
+        "type": "JSON",
+        "header": "Organizer Name",
+        "path": "organizer.displayName"
+      },
+      {
+        "type": "JSON",
+        "header": "Organizer Email",
+        "path": "organizer.email"
+      },
+      {
+        "type": "JSON",
+        "header": "Conference Type",
+        "path": "conferenceSolution.name"
+      },
+      {
+        "type": "JSON",
+        "header": "Conference Link",
+        "path": "conferenceData.entryPoints[? entryPointType \u003d\u003d \u0027video\u0027].uri"
+      },
+      {
+        "type": "JSON",
+        "header": "Conference Phone Number",
+        "path": "conferenceData.entryPoints[? entryPointType \u003d\u003d \u0027phone\u0027].uri"
+      },
+      {
+        "type": "JSON",
+        "header": "Start Timezone",
+        "path": "start.timeZone"
+      },
+      {
+        "type": "JSON",
+        "header": "End Timezone",
+        "path": "end.timeZone"
+      }
+    ]
+  },
+  "transforms": [
+    {
+      "function": {
+        "inputHeaders": {
+          "headers": [
+            "Start Time",
+            "End Time"
+          ]
+        },
+        "plugin": "formatDates",
+        "function": "formatDate"
+      }
+    },
+    {
+      "extractText": {
+        "inputHeader": "Start Time - Date",
+        "newColumnHeader": "Start Time - Date - Formatted",
+        "extractOperation": "ALL_TEXT_BEFORE",
+        "extractFrom": "OFFSET_FROM_BEGINNING",
+        "offsetLength": 10
+      }
+    }
+  ],
+  "mappings": [
+    {
+      "field": "c_endTimezone",
+      "header": "End Timezone",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/description",
+      "header": "Description",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/name",
+      "header": "Event Name",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_color",
+      "header": "Color",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_startTimezone",
+      "header": "Start Timezone",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_startTimeAllDay",
+      "header": "Start Time All Day",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/time",
+      "header": "Start Time",
+      "subfieldPath": [
+        {
+          "name": "start"
+        }
+      ]
+    },
+    {
+      "field": "c_endTimeAllDay",
+      "header": "End Time All Day",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_meetingPhoneNumber",
+      "header": "Conference Phone Number",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_startTimeFormatted",
+      "header": "Start Time - Date - Formatted",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_creatorEmail",
+      "header": "Creator Email",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/organizerEmail",
+      "header": "Organizer Email",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/landingPageUrl",
+      "header": "Event Link",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/entityId",
+      "header": "Entity ID",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_creatorName",
+      "header": "Creator Name",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_meetingType",
+      "header": "Conference Type",
+      "subfieldPath": []
+    },
+    {
+      "field": "c_meetingLink",
+      "header": "Conference Link",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/organizerName",
+      "header": "Organizer Name",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/venueName",
+      "header": "Location",
+      "subfieldPath": []
+    },
+    {
+      "field": "yext/time",
+      "header": "End Time",
+      "subfieldPath": [
+        {
+          "name": "end"
+        }
+      ]
+    }
+  ],
+  "scheduleConfig": {
+    "useSourceSchedule": true,
+    "runMode": "DEFAULT"
+  }
+}
